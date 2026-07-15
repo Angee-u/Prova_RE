@@ -36,23 +36,36 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
     double precoCombustivel = double.tryParse(_PrecoCombustivel.text) ?? 0.0;
     double consumo = double.tryParse(_ConsumoVeiculo.text) ?? 0.0;
 
-    String custo = ((distancia / consumo) * precoCombustivel).toStringAsFixed(2);
+    String custo = ((distancia / consumo) * precoCombustivel).toStringAsFixed(
+      2,
+    );
 
-    setState(() {
-      mensagemCusto = "O custo é: $custo";
-    });
+      if (distancia <= 0 || precoCombustivel <= 0 || consumo <= 0) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Digite valores válidos")));
+      } else {
+        setState(() {
+           mensagemCusto = "O custo é: $custo";
+        });    
+      }
   }
 
   void calcularTempo() {
-    double distancia = double.tryParse(_DistanciaKM.text) ?? 0.0;
+    double distancia = double.tryParse(_DistanciaTempo.text) ?? 0.0;
     double velocidadeMedia = double.tryParse(_VelocidadeMedia.text) ?? 0.0;
 
     String tempoViagem = (distancia / velocidadeMedia).toStringAsFixed(2);
 
-    setState(() {
-      mensagemTempo =
-          "O tempo de viagem será aproximadamente de $tempoViagem horas";
-    });
+    if (distancia <= 0 || velocidadeMedia <= 0) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Digite valores válidos")));
+    } else {
+      setState(() {
+        mensagemTempo = "O tempo de viagem será aproximadamente de $tempoViagem horas";
+      });
+    }
   }
 
   @override
@@ -125,7 +138,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
 
               SizedBox(height: 10),
 
-              Text(mensagemTempo)
+              Text(mensagemTempo),
             ],
           ),
         ),
